@@ -51,7 +51,7 @@ var api = (function (){
       if (!etags[app].hasOwnProperty(model)) {
         etags[app][model] = {};
       }
-      etags[app][model][id] = '"' + etag + '"';
+      etags[app][model][id] = etag;
     }
     window.sessionStorage.etags = JSON.stringify(etags);
   };
