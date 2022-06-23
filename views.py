@@ -380,7 +380,7 @@ class ItemDetail(generics.RetrieveAPIView):
         instance = self.get_object()
         serializer = self.get_serializer(instance)
         try:
-            return Response(serializer.data, headers={'etag': '%d' % instance.version_number})
+            return Response(serializer.data, headers={'etag': '\"%s\"' % str(instance.version_number)})
         except (AttributeError, TypeError):
             return Response(serializer.data)
 
@@ -499,7 +499,7 @@ class ItemUpdate(generics.UpdateAPIView):
         try:
             # return Response(serializer(updated_instance).data,
             # headers={'etag': '%s' % updated_instance['version_number']})
-            return Response(updated_instance, headers={'etag': '%s' % updated_instance['version_number']})
+            return Response(updated_instance, headers={'etag': '\"%s\"' % str(updated_instance['version_number'])})
         except KeyError:
             # return Response(serializer(updated_instance).data)
             return Response(updated_instance)
@@ -550,7 +550,7 @@ class ItemCreate(generics.CreateAPIView):
         created_instance = ItemDetail().get_item(request, pk=instance_id, **kwargs)
         headers = self.get_success_headers(serializer.data)
         try:
-            headers['etag'] = '%s' % created_instance['version_number']
+            headers['etag'] = '\"%s\"' % str(created_instance['version_number'])
         except Exception:
             pass
         return Response(created_instance, status=status.HTTP_201_CREATED, headers=headers)
